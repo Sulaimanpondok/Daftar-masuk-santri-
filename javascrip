@@ -1,0 +1,39 @@
+const express = require('express');
+const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
+const registrationRoutes = require('./routes/registration');
+
+const app = express();
+const PORT = 3000;
+
+// Middleware
+app.use(bodyParser.json());
+app.use(express.static('public'));
+
+// Koneksi ke MongoDB
+mongoose.connect('mongodb://localhost:27017/santriDB', { useNewUrlParser: true, useUnifiedTopology: true })
+  .then(() => console.log('Database connected'))
+  .catch(err => console.error('Database connection error:', err));
+
+// Routes
+app.use('/api/register', registrationRoutes);
+
+// Jalankan server
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
+2. Model Santri
+File: models/student.js
+
+javascript
+Copy code
+const mongoose = require('mongoose');
+
+const studentSchema = new mongoose.Schema({
+  name: String,
+  age: Number,
+  gender: String,
+  address: String,
+});
+
+module.exports = mongoose.model('Student', studentSchema);
